@@ -1,0 +1,80 @@
+version : '3'
+
+services:
+  deb-nginx:
+    depends_on:
+    - deb-mariadb
+    # build - правила сборки образа
+    build: 
+      # Прочесть из директории Dockerfile и собрать образ, введите путь к Dokerfile
+      context: ./debian_nginx
+      # Передать аргументы Dockerfile, которые буду опрделенны как переменные окружения в контейнере
+      args:
+      # Инициализация аргументов (Чтобы узнать зачем нужен аргументы, см. Dokerfile)
+       NEWUSER: ${USER}
+    # Назначить имя контейнеру
+    container_name: nginx
+    # Назначить имя собраному образу и присвоить tag [name_image : tag]
+    # tag - вводить не обезательно, по умолчаню будет latest
+    image: deb/nginx:v2
+    # Подключить сеть docker
+    networks:
+    - dockernet
+    # Задать доменное имя
+    # По сути вписывает строку в файл /etc/hosts внутрик контейнера
+    # В моем случае после экранирования 127.0.0.1   mlikt.42.fr
+    extra_hosts:
+    - ${USER}.42.fr:127.0.0.1
+    # Связать порты контейнера с хост-машиной [port-containter]:[port-host]
+    ports:
+    - 443:443
+    # Присоеденить котолог к тому [name_volume] : [target path_direction]
+    volumes:
+      - my-volume:/var/www/html
+    restart: always
+  deb-mariadb:
+    env_file: .env
+    build:
+      context: ./debian_mariadb
+      # ----------------------- #
+      #
+      # Исторический кусок кода:
+      # 
+      # args:
+      #   DB_NAME: ${DB_NAME}
+      #   DB_USER: ${DB_USER}
+      #   DB_PASSWORD: ${DB_PASSWORD}
+      # ----------------------- #
+    container_name: mariadb
+    image: deb/mariadb:v2
+    networks:
+    - dockernet
+    volumes:
+    - db-volume:/var/lib/mysql
+    restart: always
+    # Извелчь переменные окружения из файла
+    # Таким образом можно задать список переменных
+
+# Cоздание сети
+networks:
+  dockernet:
+    driver: bridge
+    name: dockernet
+
+#Создание томов
+volumes:
+  my-volume:
+    #Задать имя тому
+    name: my-volume
+    driver: local
+    driver_opts:
+      type: ext4
+      o: bind
+      device: /home/${USER}/debian_nginx/www
+  db-volume:
+    name: db-volume
+    driver: local
+    driver_opts:
+      type: ext4
+      o: bind
+      device: /home/${USER}/debian_mariadb/lib
