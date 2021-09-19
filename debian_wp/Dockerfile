@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:10
 
 ARG NEWUSER
 
@@ -7,16 +7,22 @@ RUN apt-get update
 # Устанавливаем php и php-fpm, а так-же инструмент curl 
 # (альтернатива для нашего случая wget)
 # Чтобы скачать и установить wp-cli
-RUN apt-get install -y php php-fpm
+RUN apt-get install -y php php-fpm php-common php-iconv php-json \
+						php-gd php-curl php-xml php-mysqli php-imap\
+						php-cgi php-pdo php-soap \
+						php-xmlrpc php-posix php-gettext \
+						php-ldap php-ctype php-dom \
+						php-mbstring php-phar
 RUN apt-get install -y curl
 RUN apt-get install -y sudo
+
 
 # Создаем пользователя 
 # --------------------------------------- #
 
-# RUN [ "root" !=  $NEWUSER ] && \
-# 	useradd -d /home/$NEWUSER -m -s /bin/bash $NEWUSER \
-# 	&& echo "$NEWUSER:$NEWUSER" | chpasswd && adduser $NEWUSER sudo
+ RUN [ "root" !=  $NEWUSER ] && \
+	useradd -d /home/$NEWUSER -m -s /bin/bash $NEWUSER \
+	&& echo "$NEWUSER:$NEWUSER" | chpasswd && adduser $NEWUSER sudo
 
 # --------------------------------------- #
 
@@ -31,8 +37,13 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 
 # Подготовим место для wordpress файлов
 RUN mkdir /var/www
+RUN mkdir /var/www/html
+
+COPY ./www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 # Установить wordpress в указанную директорию
-RUN wp core download    --allow-root --path="/var/www"
 
-CMD /bin/bash
+
+COPY ./wordpress_start.sh /
+
+CMD sh wordpress_start.sh

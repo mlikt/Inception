@@ -47,7 +47,7 @@ RUN chmod 0444 /etc/mysql/my.cnf
 # 	&& echo "FLUSH PRIVILEGES;" | mysql --no-defaults -u root ; fi
 
 # -------------------------------------------------------------- #
-
+COPY ./50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY ./mariadb_start.sh /bin/mariadb_start.sh
 # RUN chmod +x /bin/mariadb_start.sh
 
@@ -60,4 +60,4 @@ COPY ./mariadb_start.sh /bin/mariadb_start.sh
 # Одна команда один контекст! 
 # Поэтому следует задать права исполняемому файлу (скрипту) перед его запуском в поле CMD
 
-CMD chmod +x /bin/mariadb_start.sh ; mariadb_start.sh
+CMD sh /bin/mariadb_start.sh
