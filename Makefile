@@ -31,7 +31,10 @@ recreatedir:
 
 
 rm-all: rm-container
-	docker rmi $(shell docker images -q)
+	@docker rmi $(shell docker images -q) 2>/dev/null || true
+	@cat /etc/hosts | grep -v "127.0.0.1 mlikt.42.fr" > hosts
+	@sudo mv hosts /etc/hosts
+	@sudo rm -rf ${PATH_DIR} 2>/dev/null
 
 rm-images:
 	@docker rmi deb/nginx:${USER} 2>/dev/null \
