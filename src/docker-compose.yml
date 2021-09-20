@@ -7,7 +7,7 @@ services:
     # build - правила сборки образа
     build: 
       # Прочесть из директории Dockerfile и собрать образ, введите путь к Dokerfile
-      context: ./debian_nginx
+      context: ./requirements/nginx
       # Передать аргументы Dockerfile, которые буду опрделенны как переменные окружения в контейнере
       args:
       # Инициализация аргументов (Чтобы узнать зачем нужен аргументы, см. Dokerfile)
@@ -35,7 +35,7 @@ services:
     restart: always
   deb-mariadb:
     build:
-      context: ./debian_mariadb
+      context: ./requirements/mariadb
       # ----------------------- #
       #
       # Исторический кусок кода:
@@ -63,7 +63,7 @@ services:
     depends_on:
     - deb-mariadb
     build:
-      context: ./debian_wp
+      context: ./requirements/wordpress
       args:
         NEWUSER: ${USER}
     container_name: wordpress
@@ -92,11 +92,11 @@ volumes:
     driver_opts:
       type: ext4
       o: bind
-      device: /home/${USER}/debian_nginx/www
+      device: /home/${USER}/data/www
   db-volume:
     name: db-volume
     driver: local
     driver_opts:
       type: ext4
       o: bind
-      device: /home/${USER}/debian_mariadb/lib
+      device: /home/${USER}/data/db

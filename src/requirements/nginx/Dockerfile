@@ -20,8 +20,8 @@ RUN [ "root" !=  $NEWUSER ] && \
 
 # Закинуть конфигурационные файлы с host-машины
 
-COPY ./default /etc/nginx/sites-enabled
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/default /etc/nginx/sites-enabled
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 # Создать дерикторию где будут хранится сгенерированные ключи
 # RUN mkdir /etc/nginx/ssl
@@ -69,6 +69,6 @@ RUN [ "root" !=  $NEWUSER ] && chown -R $NEWUSER:$NEWUSER /var/www/html
 # CMD ["nginx", "-g", "daemon off;"]
 # CMD /bin/sh nginx -g "deamon off;"  # кто объяснит почему не отрабатывает?
 
-COPY ./start_nginx.sh /
+COPY ./tools/start_nginx.sh /
 CMD [ "sh", "start_nginx.sh"]
 # deamon off - нужен чтобы nginx не отправлять в фоновый режим

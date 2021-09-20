@@ -9,7 +9,7 @@ RUN apt-get update
 RUN apt-get install -y mariadb-server sudo
 
 # Перекидываем файл конфигурации
-COPY ./my.cnf /etc/mysql/my.cnf
+COPY ./conf/my.cnf /etc/mysql/my.cnf
 RUN chmod 0444 /etc/mysql/my.cnf
 
 RUN [ "root" !=  $NEWUSER ] && \
@@ -50,8 +50,8 @@ RUN [ "root" !=  $NEWUSER ] && \
 # 	&& echo "FLUSH PRIVILEGES;" | mysql --no-defaults -u root ; fi
 
 # -------------------------------------------------------------- #
-COPY ./50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-COPY ./mariadb_start.sh /bin/mariadb_start.sh
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./tools/mariadb_start.sh /bin/mariadb_start.sh
 # RUN chmod +x /bin/mariadb_start.sh
 
 # CMD ["mysqld_safe"]

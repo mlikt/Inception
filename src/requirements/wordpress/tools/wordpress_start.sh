@@ -22,10 +22,15 @@ wp core install	--allow-root \
 				--admin_email="mlikt@student.21-school.ru" \
 				--path="/var/www/html"
 
+sed "2idefine('WP_HOME','$DOMIAN_NAME');" /var/www/html/wp-config.php >> /var/www/html/wp-config.php.new
+mv /var/www/html/wp-config.php.new /var/www/html/wp-config.php
+sed "2idefine('WP_SITEURL','$DOMIAN_NAME');" /var/www/html/wp-config.php >> /var/www/html/wp-config.php.new
+mv /var/www/html/wp-config.php.new /var/www/html/wp-config.php
+
 if [ "root" -ne $NEWUSER ] ;
 	then
-		chown -R $NEWUSER:$NEWUSER /var/www/html ;
+	chown -R $NEWUSER:$NEWUSER /var/www/html ;
 fi
 
 # Запускаем сервис чтобы создался сокет-файл, отлчючаем и запускаем на переднем плане
- service php7.3-fpm stop ; php-fpm7.3 --nodaemonize
+service php7.3-fpm stop ; php-fpm7.3 --nodaemonize
