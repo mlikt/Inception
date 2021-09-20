@@ -22,9 +22,9 @@ wp core install	--allow-root \
 				--admin_email="mlikt@student.21-school.ru" \
 				--path="/var/www/html"
 
-sed "2idefine('WP_HOME','$DOMIAN_NAME');" /var/www/html/wp-config.php >> /var/www/html/wp-config.php.new
+sed "2idefine('WP_HOME','https://$DOMIAN_NAME');" /var/www/html/wp-config.php >> /var/www/html/wp-config.php.new
 mv /var/www/html/wp-config.php.new /var/www/html/wp-config.php
-sed "2idefine('WP_SITEURL','$DOMIAN_NAME');" /var/www/html/wp-config.php >> /var/www/html/wp-config.php.new
+sed "2idefine('WP_SITEURL','https://$DOMIAN_NAME');" /var/www/html/wp-config.php >> /var/www/html/wp-config.php.new
 mv /var/www/html/wp-config.php.new /var/www/html/wp-config.php
 
 if [ "root" -ne $NEWUSER ] ;
