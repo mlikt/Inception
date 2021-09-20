@@ -25,6 +25,8 @@ if [ "root" !=  $NEWUSER ] ;
 	 chown -R $NEWUSER:$NEWUSER /var/lib/mysql/wordpress ;
 fi
 
+echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');" | mysql --no-defaults -u root ;
+
 chmod 0777 /var/lib/mysql/wordpress ;
 # Отключаем, чтобы перезапустить вне фонового режима
 service mysql stop
