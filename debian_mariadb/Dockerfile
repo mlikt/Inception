@@ -3,15 +3,18 @@ FROM debian:10
 # ARG DB_NAME
 # ARG DB_USER
 # ARG DB_PASSWORD
-
+ARG NEWUSER
 # Устанавливаем mariadb
 RUN apt-get update
-RUN apt-get install -y mariadb-server
+RUN apt-get install -y mariadb-server sudo
 
 # Перекидываем файл конфигурации
 COPY ./my.cnf /etc/mysql/my.cnf
 RUN chmod 0444 /etc/mysql/my.cnf
 
+RUN [ "root" !=  $NEWUSER ] && \
+	useradd -d /home/$NEWUSER -m -s /bin/bash $NEWUSER \
+	&& echo "$NEWUSER:$NEWUSER" | chpasswd && adduser $NEWUSER sudo
 # Примичание если мы запускаем сервевис в одной инструкции RUN
 # это не означает, что он будет запущен для следующей инструкции RUN
 # Поэтому мы запускаем mariadb для следующей инструкции

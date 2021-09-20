@@ -15,6 +15,7 @@ RUN apt-get -y update \
 RUN [ "root" !=  $NEWUSER ] && \
 	useradd -d /home/$NEWUSER -m -s /bin/bash $NEWUSER \
 	&& echo "$NEWUSER:$NEWUSER" | chpasswd && adduser $NEWUSER sudo
+
 # Устанавливаем nginx и openssl
 
 # Закинуть конфигурационные файлы с host-машины

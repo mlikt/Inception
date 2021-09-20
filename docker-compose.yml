@@ -31,6 +31,7 @@ services:
     # Присоеденить котолог к тому [name_volume] : [target path_direction]
     volumes:
       - my-volume:/var/www/html
+    # Пробовать перезапускать при падении контейнера
     restart: always
   deb-mariadb:
     build:
@@ -43,7 +44,10 @@ services:
       #   DB_NAME: ${DB_NAME}
       #   DB_USER: ${DB_USER}
       #   DB_PASSWORD: ${DB_PASSWORD}
+      #
       # ----------------------- #
+      args:
+        NEWUSER: ${USER}
     container_name: mariadb
     image: deb/mariadb:${USER}
     networks:

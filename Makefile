@@ -20,6 +20,11 @@ build:
 # build-env: generation_envfile
 # 	env `cat .env` bash -c "docker-compose build"
 
+recreatedir:
+	@sudo rm -rf ${PATH_DIR} 2>/dev/null
+	@mkdir ${PATH_DIR} 2>/dev/null
+
+
 rm-all:rm-container
 	docker rmi $(shell docker images -q)
 

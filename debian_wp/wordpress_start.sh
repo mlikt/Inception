@@ -1,5 +1,7 @@
 #!/bin/sh
 
+service php7.3-fpm start
+
 # Подключение к базе данных
 wp core download    --allow-root --path="/var/www/html"
 
@@ -20,7 +22,10 @@ wp core install	--allow-root \
 				--admin_email="mlikt@student.21-school.ru" \
 				--path="/var/www/html"
 
-[ "root" !=  $NEWUSER ] && chown -R $NEWUSER:$NEWUSER /var/www/html
+if [ "root" -ne $NEWUSER ] ;
+	then
+		chown -R $NEWUSER:$NEWUSER /var/www/html ;
+fi
 
 # Запускаем сервис чтобы создался сокет-файл, отлчючаем и запускаем на переднем плане
-service php7.3-fpm start ; service php7.3-fpm stop ; php-fpm7.3 --nodaemonize
+ service php7.3-fpm stop ; php-fpm7.3 --nodaemonize
