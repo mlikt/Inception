@@ -54,7 +54,7 @@ run:
 	docker-compose -f ${COMPOSE_FILE} up -d
 
 stop:
-	docker-compose stop
+	docker-compose -f ${COMPOSE_FILE}stop
 
 dns-host-add:
 	@echo "Задать доменное имя локальному сайту: $$USER.42.fr"
