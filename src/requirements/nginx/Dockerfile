@@ -3,19 +3,10 @@ FROM debian:10
 
 # Для создания нового пользователя с таким же именем как и у пользователя
 # хоста который вызвал файл сборки, отличного от root
-ARG NEWUSER
-
 RUN apt-get -y update \
-	&& apt-get -y install nginx \
-	&& apt-get -y install openssl \
-    && apt-get -y install sudo
-
-
+	&& apt-get -y install nginx\
+	&& apt-get -y install openssl
 # Проверяем, если запустил root то пользователя создавать не нужно иначе создаем
-RUN [ "root" !=  $NEWUSER ] && \
-	useradd -d /home/$NEWUSER -m -s /bin/bash $NEWUSER \
-	&& echo "$NEWUSER:$NEWUSER" | chpasswd && adduser $NEWUSER sudo
-
 # Устанавливаем nginx и openssl
 
 # Закинуть конфигурационные файлы с host-машины
@@ -63,12 +54,11 @@ COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 # Изменяем права чтобы можно было модифицировать файл из хоста не перключаясь
 # в режим суперпользователя
-RUN [ "root" !=  $NEWUSER ] && chown -R $NEWUSER:$NEWUSER /var/www/html
 
 # Записываем строку в глобальную директиву 
 # CMD ["nginx", "-g", "daemon off;"]
 # CMD /bin/sh nginx -g "deamon off;"  # кто объяснит почему не отрабатывает?
 
 COPY ./tools/start_nginx.sh /
-CMD [ "sh", "start_nginx.sh"]
+CMD ["sh", "start_nginx.sh"]
 # deamon off - нужен чтобы nginx не отправлять в фоновый режим

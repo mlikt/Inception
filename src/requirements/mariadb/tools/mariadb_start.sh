@@ -20,14 +20,8 @@ if [ "1" != $find_my_database ] ;
 	then echo "CREATE DATABASE IF NOT EXISTS $DB_NAME;" | mysql --no-defaults -u $DB_USER --password="$DB_PASSWORD" ;
 fi
 
-if [ "root" !=  $NEWUSER ] ;
-	then
-	 chown -R $NEWUSER:$NEWUSER /var/lib/mysql/wordpress ;
-fi
-
 echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');" | mysql --no-defaults -u root ;
 
-chmod 0777 /var/lib/mysql/wordpress ;
 # Отключаем, чтобы перезапустить вне фонового режима
 service mysql stop
 

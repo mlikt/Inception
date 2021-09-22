@@ -12,9 +12,6 @@ RUN apt-get install -y mariadb-server sudo
 COPY ./conf/my.cnf /etc/mysql/my.cnf
 RUN chmod 0444 /etc/mysql/my.cnf
 
-RUN [ "root" !=  $NEWUSER ] && \
-	useradd -d /home/$NEWUSER -m -s /bin/bash $NEWUSER \
-	&& echo "$NEWUSER:$NEWUSER" | chpasswd && adduser $NEWUSER sudo
 # Примичание если мы запускаем сервевис в одной инструкции RUN
 # это не означает, что он будет запущен для следующей инструкции RUN
 # Поэтому мы запускаем mariadb для следующей инструкции

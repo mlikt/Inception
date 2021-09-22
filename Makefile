@@ -54,7 +54,7 @@ run:
 	docker-compose -f ${COMPOSE_FILE} up -d
 
 stop:
-	docker-compose -f ${COMPOSE_FILE}stop
+	docker-compose -f ${COMPOSE_FILE} stop
 
 dns-host-add:
 	@echo "Задать доменное имя локальному сайту: $$USER.42.fr"
@@ -65,7 +65,6 @@ generation_envfile:
 	@echo "Generation .env"
 	@>  ${ENV}
 	@echo "DOMIAN_NAME=$$USER.42.fr" >> ${ENV}
-	@echo "NEWUSER=$$USER" >> ${ENV}
 	@echo "DB_NAME=wordpress" >> ${ENV}
 	@echo "DB_USER=$$USER" >> ${ENV}
 	@echo "DB_PASSWORD=$$USER" >> ${ENV}

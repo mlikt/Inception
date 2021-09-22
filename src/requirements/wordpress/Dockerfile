@@ -1,6 +1,5 @@
 FROM debian:10
 
-ARG NEWUSER
 
 
 RUN apt-get update
@@ -17,14 +16,6 @@ RUN apt-get install -y curl
 RUN apt-get install -y sudo
 
 
-# Создаем пользователя 
-# --------------------------------------- #
-
- RUN [ "root" !=  $NEWUSER ] && \
-	useradd -d /home/$NEWUSER -m -s /bin/bash $NEWUSER \
-	&& echo "$NEWUSER:$NEWUSER" | chpasswd && adduser $NEWUSER sudo
-
-# --------------------------------------- #
 
 # Скачиваем wp-cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
