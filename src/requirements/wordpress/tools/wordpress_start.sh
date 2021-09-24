@@ -1,5 +1,9 @@
 #!/bin/sh
 
+check=$(ls /var/www/html/index.php | grep index | wc -l)
+
+if [ $check == "0" ] ;
+then
 service php7.3-fpm start
 
 # Скачеваем установочные файлы
@@ -47,4 +51,7 @@ mv /var/www/html/wp-config.php.new /var/www/html/wp-config.php
 
 
 # Запускаем сервис чтобы создался сокет-файл, отлчючаем и запускаем на переднем плане
-service php7.3-fpm stop ; php-fpm7.3 --nodaemonize
+service php7.3-fpm stop ;
+fi
+
+php-fpm7.3 --nodaemonize
