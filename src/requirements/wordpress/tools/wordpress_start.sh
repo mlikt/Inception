@@ -2,7 +2,7 @@
 
 check=$(find /var/www/html -name index.php | wc -l)
 
-if [ $check == "0" ] ;
+if [ $check -eq "0" ] ;
 then
 service php7.3-fpm start
 
