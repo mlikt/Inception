@@ -1,6 +1,6 @@
 #!/bin/sh
 
-check=$(ls /var/www/html/index.php | grep index | wc -l)
+check=$(find /var/www/html -name index.php | wc -l)
 
 if [ $check == "0" ] ;
 then

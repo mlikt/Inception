@@ -18,9 +18,9 @@ find_my_database=$(echo "SHOW DATABASES;" | mysql --no-defaults -u root | grep "
 
 if [ "1" != $find_my_database ] ;
 	then echo "CREATE DATABASE IF NOT EXISTS $DB_NAME;" | mysql --no-defaults -u $DB_USER --password="$DB_PASSWORD" ;
+	echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');" | mysql --no-defaults -u root ;
 fi
 
-echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');" | mysql --no-defaults -u root ;
 
 # Отключаем, чтобы перезапустить вне фонового режима
 service mysql stop
